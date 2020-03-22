@@ -8,6 +8,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemperaturAdmin", "TemperaturAdmin\TemperaturAdmin.csproj", "{A6FB5391-D2D7-49F3-9F40-6BB03EBEF01E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documents", "documents", "{22A0DC17-70FD-4565-8942-D71D80C8D26C}"
+	ProjectSection(SolutionItems) = preProject
+		documents\Temperaturverwaltung FIA18 Aufgabe.pdf = documents\Temperaturverwaltung FIA18 Aufgabe.pdf
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
