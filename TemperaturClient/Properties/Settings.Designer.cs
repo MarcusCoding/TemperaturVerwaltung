@@ -73,7 +73,7 @@ namespace TemperaturClient.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("°C")]
         public string TemperaturTyp {
             get {
                 return ((string)(this["TemperaturTyp"]));

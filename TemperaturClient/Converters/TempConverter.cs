@@ -14,7 +14,20 @@ namespace TemperaturClient.Converters
         {
             if(value != null)
             {
-                return value + " °C";
+                if (Properties.Settings.Default.TemperaturTyp.Contains("°F"))
+                {
+                    //Konvertierung zu Fahrenheit
+                    if(value is double)
+                    {
+                        double temperatur = (double)value;
+                        return ((temperatur * 1.8) + 32) + " " + Properties.Settings.Default.TemperaturTyp;
+                    }
+                    return value;
+                }
+                else
+                {
+                    return value + " " + Properties.Settings.Default.TemperaturTyp;
+                }
             }
             else
             {

@@ -15,7 +15,7 @@
       <Value Profile="(Default)">temperaturdb</Value>
     </Setting>
     <Setting Name="TemperaturTyp" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">°C</Value>
     </Setting>
   </Settings>
 </SettingsFile>
