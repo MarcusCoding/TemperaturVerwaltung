@@ -1,0 +1,1 @@
+select se.sensorNr, se.serverschrank, se.adresse, se.herstellerNr, se.maxtemperatur, MAX(ta.temperatur), ROUND(AVG(ta.temperatur), 2), ht.name from sensoren se left join hersteller ht on ht.herstellerNr = se.herstellerNr left join temperaturen ta on ta.sensorNr = se.sensorNr group by sensorNr

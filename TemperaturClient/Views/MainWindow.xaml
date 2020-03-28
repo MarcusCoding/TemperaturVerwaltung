@@ -4,12 +4,240 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TemperaturClient"
+        xmlns:local1="clr-namespace:TemperaturClient.Converters"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="TemperaturClient" Height="450" Width="800">
+    <Window.Resources>
+        <local1:ColorConverter x:Key="colorConverter"/>
+        <local1:TempConverter x:Key="temperaturConverter"/>
+        <local1:DateTimeConverter x:Key="dateConverter"/>
+        <Style TargetType="{x:Type DataGrid}">
+            <Setter Property="AlternationCount" Value="2"/>
+            <Setter Property="AlternatingRowBackground" Value="#E8EAE8"/>
+            <Setter Property="GridLinesVisibility" Value="None"/>
+        </Style>
+        <Style TargetType="{x:Type DataGridRow}">
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        </Style>
+        <Style TargetType="DataGridCell">
+            <Style.Setters>
+                <Setter Property="TextBlock.TextAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style.Setters>
+        </Style>
+    </Window.Resources>
+
     <Grid>
-        
-        
-        
-        
+        <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  SelectionChanged="TabControl_SelectionChanged">
+            <TabItem Header="Temperaturen">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <DataGrid Grid.Row="0" HorizontalAlignment="Stretch" ItemsSource="{Binding TemperaturItems}" AutoGenerateColumns="False" IsReadOnly="True" Grid.ColumnSpan="2">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="TemperaturNr" Binding="{Binding temperaturID}" />
+                            <DataGridTextColumn Header="SensorNr" Binding="{Binding sensorID}" />
+                            <DataGridTextColumn Header="Zeitstempel" Binding="{Binding zeit, Converter={StaticResource dateConverter}}" />
+                            <DataGridTextColumn Header="Temperatur"  Binding="{Binding temperatur, Converter={StaticResource temperaturConverter}}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <MultiBinding Converter="{StaticResource colorConverter}">
+                                                    <Binding Path="temperatur"/>
+                                                    <Binding Path="maxtemperatur"/>
+                                                </MultiBinding>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Maximale Temperatur überschritten" Binding="{Binding temperaturUeberschritten}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button Grid.Row="1" Content="Aktualisieren" Command="{Binding UpdateTempCommand}" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Sensoren mit Hersteller">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <DataGrid Grid.Row="0" HorizontalAlignment="Stretch" ItemsSource="{Binding SensorItems}" AutoGenerateColumns="False" IsReadOnly="True" Grid.ColumnSpan="2">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="SensorNr" Binding="{Binding sensorNr}" />
+                            <DataGridTextColumn Header="Serverschrank" Binding="{Binding serverschrank}" />
+                            <DataGridTextColumn Header="Adresse" Binding="{Binding adresse}" />
+                            <DataGridTextColumn Header="HerstellerNr" Binding="{Binding herstellerNr}"/>
+                            <DataGridTextColumn Header="Name des Herstellers" Binding="{Binding herstellerName}" />
+                            <DataGridTextColumn Header="Maximale Temperatur" Binding="{Binding maxTemperatur, Converter={StaticResource temperaturConverter}}" />
+                            <DataGridTextColumn Header="Höchste Temperatur" Binding="{Binding hoechsteTemperatur, Converter={StaticResource temperaturConverter}}" />
+                            <DataGridTextColumn Header="Durchschnittstemperatur" Binding="{Binding durchschnittsTemperatur, Converter={StaticResource temperaturConverter}}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button Grid.Row="1" Content="Aktualisieren" Command="{Binding UpdateSensorCommand}" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Sensoren mit Temperaturen">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <DataGrid Grid.Row="0" HorizontalAlignment="Stretch" ItemsSource="{Binding SensorTemperaturenItems}" AutoGenerateColumns="False" IsReadOnly="True" Grid.ColumnSpan="2">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="SensorNr" Binding="{Binding sensorNr}" />
+                            <DataGridTextColumn Header="Serverschrank" Binding="{Binding serverschrank}" />
+                            <DataGridTextColumn Header="Adresse" Binding="{Binding adresse}" />
+                            <DataGridTextColumn Header="HerstellerNr" Binding="{Binding herstellerNr}"/>
+                            <DataGridTextColumn Header="Maximale Temperatur" Binding="{Binding maxTemperatur, Converter={StaticResource temperaturConverter}}" />
+                            <DataGridTextColumn Header="TemperaturID" Binding="{Binding TemperaturID}" />
+                            <DataGridTextColumn Header="Temperatur" Binding="{Binding temperatur, Converter={StaticResource temperaturConverter}}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <MultiBinding Converter="{StaticResource colorConverter}">
+                                                    <Binding Path="temperatur"/>
+                                                    <Binding Path="maxTemperatur"/>
+                                                </MultiBinding>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Zeitstempel" Binding="{Binding zeit, Converter={StaticResource dateConverter}}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button Grid.Row="1" Content="Aktualisieren" Command="{Binding UpdateSensorTempCommand}" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="TemperaturAuswertungen">
+                <Grid Background="#FFE5E5E5">
+                    <TabControl>
+                        <TabItem Header="Temperaturen + Sensor + Hersteller">
+                            <Grid Background="#FFE5E5E5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="50"/>
+                                </Grid.RowDefinitions>
+                                <DataGrid Grid.Row="0" HorizontalAlignment="Stretch" ItemsSource="{Binding SelectAllItems}" AutoGenerateColumns="False" IsReadOnly="True" Grid.ColumnSpan="2">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="TemperaturNr" Binding="{Binding temperaturID}" />
+                                        <DataGridTextColumn Header="SensorNr" Binding="{Binding sensorID}" />
+                                        <DataGridTextColumn Header="Zeitstempel" Binding="{Binding zeit, Converter={StaticResource dateConverter}}" />
+                                        <DataGridTextColumn Header="Temperatur" Binding="{Binding temperatur, Converter={StaticResource temperaturConverter}}">
+                                            <DataGridTextColumn.ElementStyle>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Setter Property="Background">
+                                                        <Setter.Value>
+                                                            <MultiBinding Converter="{StaticResource colorConverter}">
+                                                                <Binding Path="temperatur"/>
+                                                                <Binding Path="maxTemperatur"/>
+                                                            </MultiBinding>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Header="SensorNr" Binding="{Binding sensorNr}" />
+                                        <DataGridTextColumn Header="Serverschrank" Binding="{Binding serverschrank}" />
+                                        <DataGridTextColumn Header="Adresse" Binding="{Binding adresse}" />
+                                        <DataGridTextColumn Header="HerstellerNr" Binding="{Binding herstellerNr}"/>
+                                        <DataGridTextColumn Header="Maximale Temperatur" Binding="{Binding maxTemperatur, Converter={StaticResource temperaturConverter}}" />
+                                        <DataGridTextColumn Header="HerstellerNr" Binding="{Binding herstellerID}"/>
+                                        <DataGridTextColumn Header="Name des Herstellers" Binding="{Binding herstellerName}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <Button Grid.Row="1" Content="Aktualisieren" Command="{Binding UpdateAllTempCommand}" />
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Letzte 10 Temperaturwerte">
+                            <Grid Background="#FFE5E5E5">
+                                <DataGrid HorizontalAlignment="Stretch" ItemsSource="{Binding Last10Temperaturen}" AutoGenerateColumns="False" IsReadOnly="True" Grid.ColumnSpan="2">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="TemperaturNr" Binding="{Binding temperaturID}" />
+                                        <DataGridTextColumn Header="SensorNr" Binding="{Binding sensorID}" />
+                                        <DataGridTextColumn Header="Zeitstempel" Binding="{Binding zeit, Converter={StaticResource dateConverter}}" />
+                                        <DataGridTextColumn Header="Temperatur" Binding="{Binding temperatur, Converter={StaticResource temperaturConverter}}">
+                                            <DataGridTextColumn.ElementStyle>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Setter Property="Background">
+                                                        <Setter.Value>
+                                                            <MultiBinding Converter="{StaticResource colorConverter}">
+                                                                <Binding Path="temperatur"/>
+                                                                <Binding Path="maxtemperatur"/>
+                                                            </MultiBinding>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Header="Maximale Temperatur überschritten" Binding="{Binding temperaturUeberschritten}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Letzte 10 Temperaturwerte sortiert nach Datum">
+                            <Grid Background="#FFE5E5E5">
+                                <DataGrid Grid.Row="0" HorizontalAlignment="Stretch" ItemsSource="{Binding Last10TemperaturenDESC}" AutoGenerateColumns="False" IsReadOnly="True" Grid.ColumnSpan="2">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="TemperaturNr" Binding="{Binding temperaturID}" />
+                                        <DataGridTextColumn Header="SensorNr" Binding="{Binding sensorID}" />
+                                        <DataGridTextColumn Header="Zeitstempel" Binding="{Binding zeit, Converter={StaticResource dateConverter}}" />
+                                        <DataGridTextColumn Header="Temperatur" Binding="{Binding temperatur, Converter={StaticResource temperaturConverter}}">
+                                            <DataGridTextColumn.ElementStyle>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Setter Property="Background">
+                                                        <Setter.Value>
+                                                            <MultiBinding Converter="{StaticResource colorConverter}">
+                                                                <Binding Path="temperatur"/>
+                                                                <Binding Path="maxtemperatur"/>
+                                                            </MultiBinding>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Header="Maximale Temperatur überschritten" Binding="{Binding temperaturUeberschritten}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Einstellungen">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <Button Grid.Row="0" Content="Zufällige Temperaturen erstellen" Command="{Binding CustomTempCommand}"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+
+
+
     </Grid>
 </Window>

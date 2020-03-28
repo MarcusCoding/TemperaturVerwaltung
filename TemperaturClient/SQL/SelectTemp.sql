@@ -1,0 +1,1 @@
+select temperaturen.*, sensoren.maxtemperatur from temperaturen left join sensoren on temperaturen.sensorNr = sensoren.sensorNr

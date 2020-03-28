@@ -1,0 +1,1 @@
+SELECT * FROM (SELECT * FROM temperaturen ORDER BY temperaturNr DESC LIMIT 10) LAST10 ORDER by temperaturNr

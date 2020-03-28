@@ -1,0 +1,1 @@
+select se.sensorNr, se.serverschrank, se.adresse, se.herstellerNr, se.maxtemperatur, ta.temperaturNr, ta.temperatur, ta.zeit from sensoren se left join temperaturen ta on ta.sensorNr = se.sensorNr
