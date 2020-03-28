@@ -89,11 +89,11 @@ namespace TemperaturClient.Helpers
                                 };
                                 if(dataRow.temperatur > dataRow.maxtemperatur)
                                 {
-                                    dataRow.temperaturUeberschritten = true;
+                                    dataRow.temperaturUeberschritten = 1;
                                 }
                                 else
                                 {
-                                    dataRow.temperaturUeberschritten = false;
+                                    dataRow.temperaturUeberschritten = 0;
                                 }
                                 retVal.Add(dataRow);
                             }

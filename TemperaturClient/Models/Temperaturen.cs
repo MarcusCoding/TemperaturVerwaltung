@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace TemperaturClient.Models
 {
@@ -18,8 +19,9 @@ namespace TemperaturClient.Models
 
         public double maxtemperatur { get; set; }
 
-        public bool temperaturUeberschritten { get; set; }
+        public int temperaturUeberschritten { get; set; }
 
+        public BitmapImage image { get; set; }
 
     }
 }

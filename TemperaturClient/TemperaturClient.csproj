@@ -130,8 +130,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Resource Include="Resources\ok.png" />
-    <Resource Include="Resources\schließen.png" />
+    <Resource Include="Resources\ok.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\schließen.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="SQL\SelectAll.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

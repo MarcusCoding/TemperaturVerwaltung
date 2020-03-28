@@ -11,6 +11,8 @@
         <local1:ColorConverter x:Key="colorConverter"/>
         <local1:TempConverter x:Key="temperaturConverter"/>
         <local1:DateTimeConverter x:Key="dateConverter"/>
+        <local1:ImageConverter x:Key="imageConverter"/>
+        
         <Style TargetType="{x:Type DataGrid}">
             <Setter Property="AlternationCount" Value="2"/>
             <Setter Property="AlternatingRowBackground" Value="#E8EAE8"/>
@@ -58,7 +60,13 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Header="Maximale Temperatur überschritten" Binding="{Binding temperaturUeberschritten}" />
+                            <DataGridTemplateColumn Header="Temperatur im Rahmen?" IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding temperaturUeberschritten, Converter={StaticResource imageConverter}}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                     <Button Grid.Row="1" Content="Aktualisieren" Command="{Binding UpdateTempCommand}" />

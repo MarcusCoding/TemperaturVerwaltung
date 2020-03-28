@@ -84,6 +84,8 @@ namespace TemperaturClient.ViewModels
                     //ZusatzAuswertunen zu Temperaturen
                     if (TemperaturItems.Count > 10)
                     {
+                        Last10Temperaturen.Clear();
+                        Last10TemperaturenDESC.Clear();
                         //es ergibt keinen Sinn bei weniger als 10 Temperaturwerten dieses Sortierung durchzuführen
                         List<Temperaturen> lastRows = TemperaturItems.OrderByDescending(y => y.temperaturID).Take(10).OrderBy(y => y.temperaturID).ToList();
                         List<Temperaturen> lastRowsDesc = TemperaturItems.OrderByDescending(y => y.temperaturID).OrderByDescending(y => y.zeit).Take(10).ToList();

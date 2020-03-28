@@ -1,39 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows.Media.Imaging;
 
 namespace TemperaturClient.Converters
 {
-    public class ImageConverter : IMultiValueConverter
+    public class ImageConverter : IValueConverter
     {
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values[0] is double && values[1] is double)
+            if (values is int)
             {
-                double temperatur = (double)values[0];
-                double maxTemperatur = (double)values[1];
+                int ueberSchritten = (int)values;
 
-                if (temperatur > maxTemperatur)
+                if (ueberSchritten == 1)
                 {
-                    
+                    return new BitmapImage(new Uri("pack://application:,,,/Resources/schließen.png"));
                 }
                 else
                 {
-                    
+                    return new BitmapImage(new Uri("pack://application:,,,/Resources/ok.png"));
                 }
             }
             else
             {
-                return
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/ok.png"));
             }
         }
 
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
