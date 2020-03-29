@@ -254,8 +254,124 @@ namespace TemperaturAdmin.Helpers
             }
         }
 
+        public bool getBenutzerNr(string sql)
+        {
+            Converter converter = new Converter();
+            if (string.IsNullOrEmpty(sql))
+            {
+                return false;
+            }
+            if (connection.State == ConnectionState.Open)
+            {
+                try
+                {
+                    using (MySqlCommand cmd = new MySqlCommand(sql, connection))
+                    {
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (!reader.HasRows)
+                            {
+                                return false;
+                            }
+                            while (reader.Read())
+                            {
+                            }
+                        }
+                    }
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    log.writeLog(LogType.ERROR, MethodBase.GetCurrentMethod().Name + ": " + "Fehler beim Ausführen des Benutzer-Read-SQls", ex);
+                    log.writeLog(LogType.ERROR, MethodBase.GetCurrentMethod().Name + ": " + sql);
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
 
-        public bool closeConnection()
+        public bool getHerstellerNr(string sql)
+        {
+            Converter converter = new Converter();
+            if (string.IsNullOrEmpty(sql))
+            {
+                return false;
+            }
+            if (connection.State == ConnectionState.Open)
+            {
+                try
+                {
+                    using (MySqlCommand cmd = new MySqlCommand(sql, connection))
+                    {
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (!reader.HasRows)
+                            {
+                                return false;
+                            }
+                            while (reader.Read())
+                            {
+                            }
+                        }
+                    }
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    log.writeLog(LogType.ERROR, MethodBase.GetCurrentMethod().Name + ": " + "Fehler beim Ausführen des Hersteller-Read-SQls", ex);
+                    log.writeLog(LogType.ERROR, MethodBase.GetCurrentMethod().Name + ": " + sql);
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool genSensorNr(string sql)
+        {
+            Converter converter = new Converter();
+            if (string.IsNullOrEmpty(sql))
+            {
+                return false;
+            }
+            if (connection.State == ConnectionState.Open)
+            {
+                try
+                {
+                    using (MySqlCommand cmd = new MySqlCommand(sql, connection))
+                    {
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (!reader.HasRows)
+                            {
+                                return false;
+                            }
+                            while (reader.Read())
+                            {
+                            }
+                        }
+                    }
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    log.writeLog(LogType.ERROR, MethodBase.GetCurrentMethod().Name + ": " + "Fehler beim Ausführen des Sensoren-Read-SQls", ex);
+                    log.writeLog(LogType.ERROR, MethodBase.GetCurrentMethod().Name + ": " + sql);
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+            public bool closeConnection()
         {
             if(connection.State == ConnectionState.Open)
             {

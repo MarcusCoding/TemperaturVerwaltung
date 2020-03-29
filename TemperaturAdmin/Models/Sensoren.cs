@@ -19,5 +19,7 @@ namespace TemperaturAdmin.Models
 
         public double maxTemperatur { get; set; }
 
+        public int benutzerNr { get; set; }
+
     }
 }

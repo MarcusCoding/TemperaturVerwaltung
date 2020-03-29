@@ -54,6 +54,10 @@ namespace TemperaturAdmin.ViewModels
 
             if (sql != null)
             {
+                SelectedSensor = new Sensoren();
+                SelectedUser = new Benutzer();
+                SelectedLog = new Log();
+
                 userItems = new ObservableCollection<Benutzer>();
                 logItems = new ObservableCollection<Log>();
                 sensorItems = new ObservableCollection<Sensoren>();
@@ -224,6 +228,81 @@ namespace TemperaturAdmin.ViewModels
 
         }
 
+        public bool UserExists(int benutzerNr)
+        {
+            try
+            {
+                string checkSql = $"SELECT * from benutzer where benutzerNr = \"{benutzerNr}\"";
+                if (sql != null)
+                {
+                    if (sql.getBenutzerNr(checkSql))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                return false;
+            }
+            catch(Exception ex)
+            {
+                log.writeLog(LogType.ERROR, MethodBase.GetCurrentMethod().Name + ": Fehler beim Auslesen des Nutzers", ex);
+                return false;
+            }
+        }
+
+        public bool HerstellerExists(int herstellerNr)
+        {
+            try
+            {
+                string checkSql = $"SELECT * from hersteller where herstellerNr = \"{herstellerNr}\"";
+                if (sql != null)
+                {
+                    if (sql.getBenutzerNr(checkSql))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                log.writeLog(LogType.ERROR, MethodBase.GetCurrentMethod().Name + ": Fehler beim Auslesen der Hersteller", ex);
+                return false;
+            }
+        }
+
+        public bool SensorExits(int sensorNr)
+        {
+            try
+            {
+                string checkSql = $"SELECT * from sensoren where sensorNr = \"{sensorNr}\"";
+                if (sql != null)
+                {
+                    if (sql.getBenutzerNr(checkSql))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                log.writeLog(LogType.ERROR, MethodBase.GetCurrentMethod().Name + ": Fehler beim Auslesen der Hersteller", ex);
+                return false;
+            }
+        }
+
         #endregion
 
         #region Befehle
@@ -312,9 +391,188 @@ namespace TemperaturAdmin.ViewModels
 
         private void AddUser(object context)
         {
+            if (sql != null)
+            {
+                if (SelectedUser != null)
+                {
+                    if (string.IsNullOrEmpty(SelectedUser.anzeigeName))
+                    {
+                        MessageBox.Show($"AnzeigeName wurde nicht gefüllt!");
+                        return;
+                    }
+                    if (string.IsNullOrEmpty(SelectedUser.name))
+                    {
+                        MessageBox.Show($"Name wurde nicht gefüllt!");
+                        return;
+                    }
+                    if (SelectedUser.telefonNr < 1)
+                    {
+                        MessageBox.Show($"Telefonr wurde nicht gefüllt!");
+                        return;
+                    }
+
+                    string insertSSQL = $"INSERT INTO benutzer (name, anmeldename, telefonnr) VALUES (\"{SelectedUser.name}\", \"{SelectedUser.anzeigeName}\", \"{SelectedUser.telefonNr}\")";
+                    if (sql.executeSQL(insertSSQL))
+                    {
+                        MessageBox.Show($"Erfolgreich den Benutzer angelegt!");
+                        LoadBenutzer();
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Fehler beim Anlegen des Benutzer!");
+                    }
+
+                    LoadSensoren();
+                }
+            }
+        }
+
+        public ICommand AddLogCommand
+        {
+            get { return new DelegateCommand<object>(AddLog); }
+        }
+
+        private void AddLog(object context)
+        {
+            if (sql != null)
+            {
+                if (SelectedLog != null)
+                {
+                    if (string.IsNullOrEmpty(SelectedLog.datum))
+                    {
+                        MessageBox.Show($"Datum wurde nicht gefüllt!");
+                        return;
+                    }
+                    if (string.IsNullOrEmpty(SelectedLog.nachricht))
+                    {
+                        MessageBox.Show($"Nachricht wurde nicht gefüllt!");
+                        return;
+                    }
+                    if (SelectedLog.sensorNr < 1)
+                    {
+                        MessageBox.Show($"SensorNr wurde nicht gefüllt!");
+                        return;
+                    }
+                    if (SelectedLog.benutzerNr < 1)
+                    {
+                        MessageBox.Show($"BenutzerNr wurde nicht gefüllt!");
+                        return;
+                    }
+                    if (!UserExists(SelectedLog.benutzerNr))
+                    {
+                        MessageBox.Show($"Der Benutzer mit der ID {SelectedLog.benutzerNr} gibt es nicht!");
+                        return;
+                    }
+                    if (!SensorExits(SelectedLog.sensorNr))
+                    {
+                        MessageBox.Show($"Der Sensor mit der ID {SelectedLog.sensorNr} gibt es nicht!");
+                        return;
+                    }
+
+                    string insertSSQL = $"INSERT INTO log (sensorNr, benutzerNr, datum, nachricht) VALUES (\"{SelectedLog.sensorNr}\", \"{SelectedLog.benutzerNr}\", \"{SelectedLog.datum}\", \"{SelectedLog.nachricht}\")";
+                    if (sql.executeSQL(insertSSQL))
+                    {
+                        MessageBox.Show($"Erfolgreich den Logeintrag angelegt!");
+                        LoadLogs();
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Fehler beim Logeintrag des Benutzer!");
+                    }
+
+                    LoadSensoren();
+                }
+            }
+        }
+
+        public ICommand AddSensorCommand
+        {
+            get { return new DelegateCommand<object>(AddSensor); }
+        }
+
+        private void AddSensor(object context)
+        {
             if(sql != null)
             {
+                if(SelectedSensor != null)
+                {
+                    if (SelectedSensor.benutzerNr < 1)
+                    {
+                        MessageBox.Show($"BenutzerNr wurde nicht gefüllt!");
+                        return;
+                    }
+                    if (!UserExists(SelectedSensor.benutzerNr))
+                    {
+                        MessageBox.Show($"Der Benutzer mit der ID {SelectedSensor.benutzerNr} gibt es nicht!");
+                        return;
+                    }
+                    if (!HerstellerExists(SelectedSensor.herstellerNr))
+                    {
+                        MessageBox.Show($"Der Hersteller mit der ID {SelectedSensor.herstellerNr} gibt es nicht!");
+                        return;
+                    }
 
+                    string insertSSQL = $"INSERT INTO sensoren (serverschrank, adresse, herstellerNr, maxtemperatur) VALUES (\"{SelectedSensor.serverschrank}\", \"{SelectedSensor.adresse}\", \"{SelectedSensor.herstellerNr}\", \"{SelectedSensor.maxTemperatur}\")";
+                    if (sql.executeSQL(insertSSQL))
+                    {
+                        string insertSQL = String.Format("INSERT INTO log (sensorNr, benutzerNr, datum, nachricht) VALUES (\"{0}\", \"{1}\", \"{2}\", \"{3}\")", SelectedSensor.sensorNr, SelectedSensor.benutzerNr, DateTime.Now.ToString("dd.MM.yyyy H:mm"), "Neuer Sensor wurde angelegt!");
+                        sql.executeSQL(insertSQL);
+                        MessageBox.Show($"Erfolgreich den Sensor angelegt!");
+                        LoadSensoren();
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Fehler beim Anlegen des Sensors!");
+                    }
+                    
+                    LoadSensoren();
+                }
+            }
+        }
+
+        public ICommand EditSensorCommand
+        {
+            get { return new DelegateCommand<object>(EditSensor); }
+        }
+
+        private void EditSensor(object context)
+        {
+            if (sql != null)
+            {
+                if (SelectedSensor != null && SelectedSensor.sensorNr > 0)
+                {
+                    //Überprüfungen
+                    if(SelectedSensor.benutzerNr < 1)
+                    {
+                        MessageBox.Show($"BenutzerNr wurde nicht gefüllt!");
+                        return;
+                    }
+                    if (!UserExists(SelectedSensor.benutzerNr))
+                    {
+                        MessageBox.Show($"Der Benutzer mit der ID {SelectedSensor.benutzerNr} gibt es nicht!");
+                        return;
+                    }
+                    if (!HerstellerExists(SelectedSensor.herstellerNr))
+                    {
+                        MessageBox.Show($"Der Hersteller mit der ID {SelectedSensor.herstellerNr} gibt es nicht!");
+                        return;
+                    }
+
+                    string updateSQL = $"UPDATE sensoren SET serverschrank = \"{SelectedSensor.serverschrank}\", adresse = \"{SelectedSensor.adresse}\"," +
+                        $" herstellerNr = \"{SelectedSensor.herstellerNr}\", maxTemperatur = \"{SelectedSensor.maxTemperatur}\" WHERE sensorNr = {SelectedSensor.sensorNr}";
+                    if (sql.executeSQL(updateSQL))
+                    {
+                        string insertSQL = String.Format("INSERT INTO log (sensorNr, benutzerNr, datum, nachricht) VALUES (\"{0}\", \"{1}\", \"{2}\", \"{3}\")", SelectedSensor.sensorNr, SelectedSensor.benutzerNr, DateTime.Now.ToString("dd.MM.yyyy H:mm"), $"Sensor mit ID {SelectedSensor.sensorNr} wurde geändert! Neue MaxTemp: {SelectedSensor.maxTemperatur}");
+                        sql.executeSQL(insertSQL);
+                        MessageBox.Show($"Erfolgreich den Sensor mit ID {SelectedSensor.sensorNr} geändert!");
+                        LoadSensoren();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Fehler beim Ändern des Sensors!");
+                    }
+
+                }
             }
         }
 
@@ -349,14 +607,14 @@ namespace TemperaturAdmin.ViewModels
 
         private void RemoveSensor(object context)
         {
-            if (SelectedSensor != null)
+            if (SelectedSensor != null && SelectedSensor.sensorNr > 0)
             {
                 if (sql != null)
                 {
                     string sSQL = String.Format("DELETE FROM sensoren WHERE sensorNr = \"{0}\"", SelectedSensor.sensorNr);
                     if (sql.executeSQL(sSQL))
                     {
-                        string insertSQL = String.Format("INSERT INTO log (sensorNr, benutzerNr, datum, nachricht) VALUES (\"{0}\", \"{1}\", \"{2}\", \"{3}\")", SelectedSensor.sensorNr, 1, DateTime.Now.ToString("dd.MM.yyyy H:mm"), $"Sensor mit ID {SelectedTemp.sensorID} wurde gelöscht!");
+                        string insertSQL = String.Format("INSERT INTO log (sensorNr, benutzerNr, datum, nachricht) VALUES (\"{0}\", \"{1}\", \"{2}\", \"{3}\")", SelectedSensor.sensorNr, 1, DateTime.Now.ToString("dd.MM.yyyy H:mm"), $"Sensor mit ID {SelectedSensor.sensorNr} wurde gelöscht!");
                         sql.executeSQL(insertSQL);
                         LoadSensoren();
                     }
@@ -373,7 +631,7 @@ namespace TemperaturAdmin.ViewModels
 
         private void RemoveUser(object context)
         {
-            if (SelectedUser != null)
+            if (SelectedUser != null && SelectedUser.benutzerNr > 0)
             {
                 if (sql != null)
                 {

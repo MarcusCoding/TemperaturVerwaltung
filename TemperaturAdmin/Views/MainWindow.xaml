@@ -41,7 +41,7 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
-                    <DataGrid Grid.Row="0" HorizontalAlignment="Stretch" ItemsSource="{Binding userItems}"  SelectedItem="{Binding SeelctedUser}" SelectionMode="Single" AutoGenerateColumns="False" IsReadOnly="True" Grid.ColumnSpan="3">
+                    <DataGrid Grid.Row="0" HorizontalAlignment="Stretch" ItemsSource="{Binding userItems}"  SelectedItem="{Binding SelectedUser}" SelectionMode="Single" AutoGenerateColumns="False" IsReadOnly="True" Grid.ColumnSpan="2">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="BenutzerNr" Binding="{Binding benutzerNr}" />
                             <DataGridTextColumn Header="Name" Binding="{Binding name}" />
@@ -49,9 +49,36 @@
                             <DataGridTextColumn Header="Telefon"  Binding="{Binding telefonNr}"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Button Grid.Row="1" Grid.Column="0" Content="Aktualisieren" Command="{Binding UpdateUserCommand}" />
-                    <Button Grid.Row="1" Grid.Column="1" Content="Hinzufügen" Command="{Binding UpdateTempCommand}" />
-                    <Button Grid.Row="1" Grid.Column="2" Content="Löschsen" Command="{Binding UpdateTempCommand}" />
+                    <Grid Grid.Row="0" Grid.Column="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0" Content="BenutzerNr" />
+                        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" PreviewKeyDown="TextBox_PreviewKeyDown" Text="{Binding SelectedUser.benutzerNr}" IsEnabled="False" />
+
+                        <Label Grid.Row="1" Grid.Column="0" Content="Name"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1" Text="{Binding SelectedUser.name}"  />
+
+                        <Label Grid.Row="2" Grid.Column="0" Content="AnzeigeName" />
+                        <TextBox Grid.Row="2" Grid.Column="1"  Grid.ColumnSpan="1" Text="{Binding SelectedUser.anzeigeName}"  />
+
+                        <Label Grid.Row="3" Grid.Column="0" Content="Telefonnummer" />
+                        <TextBox Grid.Row="3" Grid.Column="1"  Grid.ColumnSpan="1" PreviewKeyDown="TextBox_PreviewKeyDown" Text="{Binding SelectedUser.telefonNr}"  />
+                        <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"/>
+
+                        <Button Margin="5, 0, 0, 5" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Content="Aktualisieren" Command="{Binding UpdateUserCommand}" />
+                        <Button Margin="5, 0, 0, 5" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Content="Hinzufügen" Command="{Binding AddUserCommand}" />
+                    </Grid>
                 </Grid>
             </TabItem>
             <TabItem Header="Logs">
@@ -65,7 +92,7 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
-                    <DataGrid Grid.Row="0" HorizontalAlignment="Stretch" ItemsSource="{Binding logItems}"  SelectedItem="{Binding SelectedLog}" SelectionMode="Single" AutoGenerateColumns="False" IsReadOnly="True" Grid.ColumnSpan="3">
+                    <DataGrid Grid.Row="0" HorizontalAlignment="Stretch" ItemsSource="{Binding logItems}"  SelectedItem="{Binding SelectedLog}" SelectionMode="Single" AutoGenerateColumns="False" IsReadOnly="True" Grid.ColumnSpan="2">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="LogNr" Binding="{Binding logNr}" />
                             <DataGridTextColumn Header="SensorNr" Binding="{Binding sensorNr}" />
@@ -74,9 +101,41 @@
                             <DataGridTextColumn Header="Nachricht"  Binding="{Binding nachricht}"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Button Grid.Row="1" Grid.Column="0" Content="Aktualisieren" Command="{Binding UpdateLogCommand}" />
-                    <Button Grid.Row="1" Grid.Column="1" Content="Hinzufügen" Command="{Binding UpdateTempCommand}" />
-                    <Button Grid.Row="1" Grid.Column="2" Content="Löschsen" Command="{Binding UpdateTempCommand}" />
+                    <Grid Grid.Row="0" Grid.Column="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        
+                        <Label Grid.Row="0" Grid.Column="0" Content="LogNr" />
+                        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Text="{Binding SelectedLog.logNr}" IsEnabled="False" />
+
+                        <Label Grid.Row="1" Grid.Column="0" Content="SensorNr"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1" PreviewKeyDown="TextBox_PreviewKeyDown" Text="{Binding SelectedLog.sensorNr}"  />
+
+                        <Label Grid.Row="2" Grid.Column="0" Content="BenutzerNr" />
+                        <TextBox Grid.Row="2" Grid.Column="1"  Grid.ColumnSpan="1" PreviewKeyDown="TextBox_PreviewKeyDown" Text="{Binding SelectedLog.benutzerNr}"  />
+
+                        <Label Grid.Row="3" Grid.Column="0" Content="Datum" />
+                        <TextBox Grid.Row="3" Grid.Column="1"  Grid.ColumnSpan="1" Text="{Binding SelectedLog.datum}"  />
+
+                        <Label Grid.Row="4" Grid.Column="0" Content="Nachricht" />
+                        <TextBox Grid.Row="4" Grid.Column="1"  Grid.ColumnSpan="1" Text="{Binding SelectedLog.nachricht}"  />
+                        <Label Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"/>
+
+                        <Button Margin="5, 0, 0, 5" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Content="Aktualisieren" Command="{Binding UpdateLogCommand}" />
+                        <Button Margin="5, 0, 0, 5" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Content="Hinzufügen" Command="{Binding AddLogCommand}" />
+                    </Grid>
                 </Grid>
             </TabItem> 
             <TabItem Header="Temperaturdaten">
@@ -89,6 +148,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
                     <DataGrid Grid.Row="0" HorizontalAlignment="Stretch" ItemsSource="{Binding tempItems}" SelectedItem="{Binding SelectedTemp}" SelectionMode="Single" AutoGenerateColumns="False" IsReadOnly="True" Grid.ColumnSpan="3">
                         <DataGrid.Columns>
@@ -98,6 +158,7 @@
                             <DataGridTextColumn Header="Temperatur"  Binding="{Binding temperatur, Converter={StaticResource temperaturConverter}}"/>
                         </DataGrid.Columns>
                     </DataGrid>
+                    <!---ButtonBar-->
                     <Button Grid.Row="1" Grid.Column="0" Content="Aktualisieren" Command="{Binding UpdateTempCommand}" />
                    <!-- <Button Grid.Row="1" Grid.Column="1" Content="Hinzufügen" Command="{Binding UpdateTempCommand}" />-->
                     <Button Grid.Row="1" Grid.Column="2" Content="Löschsen" Command="{Binding RemoveTempCommand}" />
@@ -112,9 +173,8 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
-                    <DataGrid Grid.Row="0" HorizontalAlignment="Stretch" ItemsSource="{Binding sensorItems}" SelectedItem="{Binding SelectedSensor}" SelectionMode="Single" AutoGenerateColumns="False" IsReadOnly="True" Grid.ColumnSpan="3">
+                    <DataGrid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" ItemsSource="{Binding sensorItems}" SelectedItem="{Binding SelectedSensor}" SelectionMode="Single" AutoGenerateColumns="False" IsReadOnly="True">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="SensorNr" Binding="{Binding sensorNr}" />
                             <DataGridTextColumn Header="Serverschrank" Binding="{Binding serverschrank}" />
@@ -123,9 +183,49 @@
                             <DataGridTextColumn Header="Maximale Temperatur"  Binding="{Binding maxTemperatur,  Converter={StaticResource temperaturConverter}}"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Button Grid.Row="1" Grid.Column="0" Content="Aktualisieren" Command="{Binding UpdateSensorCommand}" />
-                    <Button Grid.Row="1" Grid.Column="1" Content="Hinzufügen" Command="{Binding UpdateTempCommand}" />
-                    <Button Grid.Row="1" Grid.Column="2" Content="Löschsen" Command="{Binding RemoveSensorCommand}" />
+                    <Grid Grid.Row="0" Grid.Column="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0" Content="SensorNr" />
+                        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Text="{Binding SelectedSensor.sensorNr}" IsEnabled="False" />
+
+                        <Label Grid.Row="1" Grid.Column="0" Content="Serverregal"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1" PreviewKeyDown="TextBox_PreviewKeyDown" Text="{Binding SelectedSensor.serverschrank}"  />
+
+                        <Label Grid.Row="2" Grid.Column="0" Content="Adresse" />
+                        <TextBox Grid.Row="2" Grid.Column="1"  Grid.ColumnSpan="1" Text="{Binding SelectedSensor.adresse}"  />
+
+                        <Label Grid.Row="3" Grid.Column="0" Content="Hersteller" />
+                        <TextBox Grid.Row="3" Grid.Column="1"  Grid.ColumnSpan="1" PreviewKeyDown="TextBox_PreviewKeyDown" Text="{Binding SelectedSensor.herstellerNr}"  />
+
+                        <Label Grid.Row="4" Grid.Column="0" Content="Maximale Temperatur" />
+                        <TextBox Grid.Row="4" Grid.Column="1"  Grid.ColumnSpan="1" PreviewKeyDown="TextBox_PreviewKeyDown" Text="{Binding SelectedSensor.maxTemperatur}"  />
+
+                        <Label Grid.Row="5" Grid.Column="0" Content="Benutzer" />
+                        <TextBox Grid.Row="5" Grid.Column="1"  Grid.ColumnSpan="1" PreviewKeyDown="TextBox_PreviewKeyDown" Text="{Binding SelectedSensor.benutzerNr}"  />
+
+                        <Label Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"/>
+
+                        <Button Margin="5, 0, 0, 5" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Content="Aktualisieren" Command="{Binding UpdateSensorCommand}" />
+                        <Button Margin="5, 0, 0, 5" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Content="Änderung" Command="{Binding EditSensorCommand}"/>
+                        <Button Margin="5, 0, 0, 5" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Content="Hinzufügen" Command="{Binding AddSensorCommand}" />
+                        <Button Margin="5, 0, 0, 5" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Content="Löschsen" Command="{Binding RemoveSensorCommand}" />
+                    </Grid>
                 </Grid>
             </TabItem>
         </TabControl>

@@ -26,5 +26,14 @@ namespace TemperaturAdmin.Views
             InitializeComponent();
             this.DataContext = new MainWindowViewModel();
         }
+
+        private void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            int key = (int)e.Key;
+
+            e.Handled = !(key >= 34 && key <= 43 ||
+                          key >= 74 && key <= 83 ||
+                          key == 2);
+        }
     }
 }
