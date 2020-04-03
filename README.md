@@ -8,3 +8,7 @@ Aufgabenstellung siehe [hier.](../master/documents/Temperaturverwaltung%20FIA18%
 **Client**
 
 ![Client](https://github.com/MarcusCoding/TemperaturVerwaltung/blob/master/documents/client.png)
+
+**Admin**
+
+![Admin](https://github.com/MarcusCoding/TemperaturVerwaltung/blob/master/documents/admin.png)
